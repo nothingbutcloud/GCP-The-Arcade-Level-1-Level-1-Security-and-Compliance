@@ -14,7 +14,7 @@ Today's fast-paced digital world needs security experts. Become one by mastering
 
 ## Permission authorized!
 
-#### 1. Configuring IAM Permissions with gCloud - Azure: Lab
+#### 1. Configuring IAM Permissions with gcloud - Azure: Lab
 #### 2. Configuring IAM Permissions with gcloud - AWS: Lab
 #### 3. Configuring Networks via gcloud: Lab
 #### 4. Getting Started with Security Command Center: Lab

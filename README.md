@@ -5,7 +5,7 @@ Today's fast-paced digital world needs security experts. Become one by mastering
 ## Detect, Analyze and Investigate!
 
 #### 1. [IAM Custom Roles: Lab](./Labs/GSP190%20-%20IAM%20Custom%20Roles/README.md)
-#### 2. Secure BigLake Data: Challenge Lab
+#### 2. [Secure BigLake Data: Challenge Lab](./Labs/ARC1290%20-0%20Secure0%20BigLake0%20Data0%20Challenge0%20Lab/README.md)
 #### 3. Bot Management with Google Cloud Armor and reCAPTCHA: Lab
 #### 4. Gating Deployments with Binary Authorization: Lab
 #### 5. Protect Cloud Traffic with BeyondCorp Enterprise (BCE) Security: Challenge Lab

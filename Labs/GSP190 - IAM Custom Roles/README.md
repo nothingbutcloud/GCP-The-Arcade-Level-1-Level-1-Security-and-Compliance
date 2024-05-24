@@ -59,13 +59,13 @@ includedPermissions:
 - appengine.versions.delete
 ```
 
-Execute the following gcloud command to create the custom role:
+Execute the following `gcloud` command to create the custom role:
 
 ```
 gcloud iam roles create editor --project $DEVSHELL_PROJECT_ID \
 --file role-definition.yaml
 ```
-Execute the following gcloud command to create a new role using flags:
+Execute the following `gcloud` command to create a new role using flags:
 
 ```
 gcloud iam roles create viewer --project $DEVSHELL_PROJECT_ID \
@@ -75,13 +75,13 @@ gcloud iam roles create viewer --project $DEVSHELL_PROJECT_ID \
 
 ### Task 5. List the custom roles
 
-Execute the following gcloud command to list custom roles, specifying either project-level or organization-level custom roles:
+Execute the following `gcloud` command to list custom roles, specifying either project-level or organization-level custom roles:
 
 ```
 gcloud iam roles list --project $DEVSHELL_PROJECT_ID
 ```
 
-Execute the following gcloud command to list predefined roles:
+Execute the following `gcloud` command to list predefined roles:
 
 ```
 gcloud iam roles list
@@ -91,7 +91,7 @@ gcloud iam roles list
 
 #### Update a custom role using a YAML file
 
-Get the current definition for the role by executing the following gcloud command:
+Get the current definition for the role by executing the following `gcloud` command:
 
 ```
 gcloud iam roles describe editor --project $DEVSHELL_PROJECT_ID
@@ -117,18 +117,47 @@ Add the following permissions under `includedPermissions`:
 - storage.buckets.list
 ```
 
-Execute the following gcloud command to update the role:
+Execute the following `gcloud` command to update the role:
 
 ```
-gcloud iam roles update [ROLE_ID] --project $DEVSHELL_PROJECT_ID \
+gcloud iam roles update editor --project $DEVSHELL_PROJECT_ID \
 --file new-role-definition.yaml
 ```
 
 #### Update a custom role using flags
 
-Execute the following gcloud command to add permissions to the viewer role using flags:
+Execute the following `gcloud` command to add permissions to the viewer role using flags:
 
 ```
 gcloud iam roles update viewer --project $DEVSHELL_PROJECT_ID \
 --add-permissions storage.buckets.get,storage.buckets.list
 ```
+
+### Task 7. Disable a custom role
+
+Execute the following `gcloud` command to disable the viewer role:
+
+```
+gcloud iam roles update viewer --project $DEVSHELL_PROJECT_ID \
+--stage DISABLED
+```
+
+### Task 8. Delete a custom role
+
+Use the `gcloud iam roles delete` command to delete a custom role. Once deleted the role is inactive and cannot be used to create new IAM policy bindings:
+
+```
+gcloud iam roles delete viewer --project $DEVSHELL_PROJECT_ID
+```
+
+### Task 9. Restore a custom role
+
+Within the 7 days window you can restore a role. Deleted roles are in a **DISABLED** state. To make it available again, update the `--stage` flag:
+
+```
+gcloud iam roles undelete viewer --project $DEVSHELL_PROJECT_ID
+```
+
+### Congratulations!
+
+You have completed the lab.

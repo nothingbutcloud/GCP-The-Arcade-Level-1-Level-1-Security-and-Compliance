@@ -123,15 +123,62 @@ gcloud recaptcha keys create --display-name=test-key-name \
 2. Create the reCAPTCHA WAF challenge-page site key and enable the WAF feature for the key. You can use the reCAPTCHA challenge page feature to redirect incoming requests to reCAPTCHA Enterprise to determine whether each request is potentially fraudulent or legitimate. Later, you associate this key with the Cloud Armor security policy to enable the manual challenge. This lab refers to this key as `CHALLENGE-PAGE-KEY` in the later steps.
 
 ```
+gcloud recaptcha keys create --display-name=challenge-page-key \
+--web --allow-all-domains --integration-type=INVISIBLE \
+--waf-feature=challenge-page --waf-service=ca
+```
+
+3. Navigate to Navigation menu (Navigation menu icon) > Security > reCAPTCHA Enterprise. You should see the keys you created in the Enterprise Keys list.
+
+Capture the key id to be used in the next section.
+
+
 
 #### Implement reCAPTCHA session token site key
 
 1. Navigate to Navigation menu (Navigation menu icon) > Compute Engine > VM Instances. Locate the VM in your instance group and SSH to it.
 
+2. Go to the webserver root directory and change user to root:
+```
+cd /var/www/html/
+sudo su
+```
+3. Update the landing `index.html` page and embed the reCAPTCHA session token site key. The session token site key (that you recorded earlier) is set in the head section of your landing page as below:
+```
+src="https://www.google.com/recaptcha/enterprise.js?render=<SESSION_TOKEN_SITE_KEY>&waf=session" async defer>
+```
+Remember to replace `<SESSION_TOKEN_SITE_KEY>` with the site token before you run the following command:
+```bash
+echo '<!doctype html><html><head><title>ReCAPTCHA Session Token</title><script src="https://www.google.com/recaptcha/enterprise.js?render=<SESSION_TOKEN_SITE_KEY>&waf=session" async defer></script></head><body><h1>Main Page</h1><p><a href="/good-score.html">Visit allowed link</a></p><p><a href="/bad-score.html">Visit blocked link</a></p><p><a href="/median-score.html">Visit redirect link</a></p></body></html>' > index.html
+```
 
+4. Create three other sample pages to test out the bot management policies:
 
+- good-score.html
+```
+echo '<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252"></head><body><h1>Congrats! You have a good score!!</h1></body></html>' > good-score.html
+```
 
-###
+- bad-score.html
+```
+echo '<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252"></head><body><h1>Sorry, You have a bad score!</h1></body></html>' > bad-score.html
+```
+
+- median-score.html
+```
+echo '<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252"></head><body><h1>You have a median score that we need a second verification.</h1></body></html>' > median-score.html
+```
+
+Validate that you are able to access all the webpages by opening them in your browser. Be sure to replace [LB_IP_v4] with the IPv4 address of the load balancer:
+
+1. Open http://[LB_IP_v4]/index.html. You verify that the reCAPTCHA implementation is working when you see "protected by reCAPTCHA" at the bottom right corner of the page:
+
+2. Click into each of the links.
+   
+3. Validate you are able to access all the pages.
+
+### Task 5. Create Cloud Armor security policy rules for Bot Management
+
 
 
 

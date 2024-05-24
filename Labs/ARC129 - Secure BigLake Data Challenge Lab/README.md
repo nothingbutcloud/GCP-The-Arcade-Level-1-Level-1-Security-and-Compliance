@@ -81,4 +81,4 @@ Screens captured.
 
 Congratulations!
 
-You have completed the Challange Lab.
+You have completed the Challenge Lab.

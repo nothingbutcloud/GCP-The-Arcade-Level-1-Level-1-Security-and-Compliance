@@ -50,7 +50,7 @@ gcloud iam list-grantable-roles //cloudresourcemanager.googleapis.com/projects/$
 
 Create your role definition YAML file: role-definition.yaml
 
-```role-definition.yaml
+```js role-definition.yaml
 title: "Role Editor"
 description: "Edit access for App Versions"
 stage: "ALPHA"

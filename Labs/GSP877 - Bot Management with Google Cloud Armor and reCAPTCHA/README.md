@@ -60,4 +60,21 @@ Create a firewall rule to allow SSH-ing into the instances:
 gcloud compute firewall-rules create allow-ssh --direction=INGRESS --priority=1000 --network=default --action=ALLOW --rules=tcp:22 --source-ranges=0.0.0.0/0 --target-tags=allow-health-check
 ```
 
+### Task 2. Configure instance templates and create managed instance groups
+
+#### Configure the instance templates
+
+![Create instance template](GSP877-task-2a.png)
+
+#### 
+
+###
+
+
+###
+
+
+###
+
+
 

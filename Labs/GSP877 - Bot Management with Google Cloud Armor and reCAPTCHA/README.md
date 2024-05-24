@@ -23,3 +23,41 @@ In this lab, you learn how to:
 
 ## Solution
 
+Project ID: `qwiklabs-gcp-03-b3e9c12e8cde`
+
+### Setup
+
+In Cloud Shell, set up your project ID:
+
+```
+export PROJECT_ID=$(gcloud config get-value project)
+echo $PROJECT_ID
+gcloud config set project $PROJECT_ID
+```
+
+Enable APIs:
+
+```
+gcloud services enable compute.googleapis.com
+gcloud services enable logging.googleapis.com
+gcloud services enable monitoring.googleapis.com
+gcloud services enable recaptchaenterprise.googleapis.com
+```
+
+### Task 1. Configure firewall rules to allow HTTP and SSH traffic to backends
+
+#### Create a firewall rule to allow HTTP traffic to the backends
+
+To create a firewall rule to allow HTTP traffic to the backends, use the following command:
+
+```
+gcloud compute firewall-rules create default-allow-health-check --direction=INGRESS --priority=1000 --network=default --action=ALLOW --rules=tcp:80 --source-ranges=130.211.0.0/22,35.191.0.0/16 --target-tags=allow-health-check
+```
+
+Create a firewall rule to allow SSH-ing into the instances:
+
+```
+gcloud compute firewall-rules create allow-ssh --direction=INGRESS --priority=1000 --network=default --action=ALLOW --rules=tcp:22 --source-ranges=0.0.0.0/0 --target-tags=allow-health-check
+```
+
+

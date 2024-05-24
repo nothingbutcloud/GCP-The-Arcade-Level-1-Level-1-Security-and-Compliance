@@ -48,7 +48,7 @@ gcloud iam list-grantable-roles //cloudresourcemanager.googleapis.com/projects/$
 
 #### Create a custom role using a YAML file
 
-Create your role definition YAML file: role-definition.yaml
+Create your role definition YAML file `role-definition.yaml`:
 
 ```js role-definition.yaml
 title: "Role Editor"
@@ -59,9 +59,76 @@ includedPermissions:
 - appengine.versions.delete
 ```
 
+Execute the following gcloud command to create the custom role:
 
+```
+gcloud iam roles create editor --project $DEVSHELL_PROJECT_ID \
+--file role-definition.yaml
+```
+Execute the following gcloud command to create a new role using flags:
 
-###
+```
+gcloud iam roles create viewer --project $DEVSHELL_PROJECT_ID \
+--title "Role Viewer" --description "Custom role description." \
+--permissions compute.instances.get,compute.instances.list --stage ALPHA
+```
 
+### Task 5. List the custom roles
 
-###
+Execute the following gcloud command to list custom roles, specifying either project-level or organization-level custom roles:
+
+```
+gcloud iam roles list --project $DEVSHELL_PROJECT_ID
+```
+
+Execute the following gcloud command to list predefined roles:
+
+```
+gcloud iam roles list
+```
+
+### Task 6. Update an existing custom role
+
+#### Update a custom role using a YAML file
+
+Get the current definition for the role by executing the following gcloud command:
+
+```
+gcloud iam roles describe editor --project $DEVSHELL_PROJECT_ID
+```
+
+Create a `new-role-definition.yaml` file with the output from last command.
+
+```js new-role-definition.yaml
+description: Edit access for App Versions
+etag: BwYZLgnldeQ=
+includedPermissions:
+- appengine.versions.create
+- appengine.versions.delete
+name: projects/qwiklabs-gcp-02-a01c0a24da96/roles/editor
+stage: ALPHA
+title: Role Editor
+```
+
+Add the following permissions under `includedPermissions`:
+
+```
+- storage.buckets.get
+- storage.buckets.list
+```
+
+Execute the following gcloud command to update the role:
+
+```
+gcloud iam roles update [ROLE_ID] --project $DEVSHELL_PROJECT_ID \
+--file new-role-definition.yaml
+```
+
+#### Update a custom role using flags
+
+Execute the following gcloud command to add permissions to the viewer role using flags:
+
+```
+gcloud iam roles update viewer --project $DEVSHELL_PROJECT_ID \
+--add-permissions storage.buckets.get,storage.buckets.list
+```

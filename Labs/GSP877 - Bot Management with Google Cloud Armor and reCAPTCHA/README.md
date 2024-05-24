@@ -69,7 +69,7 @@ gcloud compute firewall-rules create allow-ssh --direction=INGRESS --priority=10
 Run the following command:
 
 ```
-gcloud compute instance-templates create lb-backend-template --project=qwiklabs-gcp-03-b3e9c12e8cde --machine-type=n1-standard-1 --network-interface=network-tier=PREMIUM,subnet=default --metadata=startup-script=\#\!\ /bin/bash$'\n'sudo\ apt-get\ update$'\n'sudo\ apt-get\ install\ apache2\ -y$'\n'sudo\ a2ensite\ default-ssl$'\n'sudo\ a2enmod\ ssl$'\n'sudo\ su$'\n'vm_hostname=\"\$\(curl\ -H\ \"Metadata-Flavor:Google\"\ \\$'\n'http://metadata.google.internal/computeMetadata/v1/instance/name\)\"$'\n'echo\ \"Page\ served\ from:\ \$vm_hostname\"\ \|\ \\$'\n'tee\ /var/www/html/index.html,enable-oslogin=true --maintenance-policy=MIGRATE --provisioning-model=STANDARD --service-account=401603670420-compute@developer.gserviceaccount.com --scopes=https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/trace.append --region=us-east1 --tags=allow-health-check --create-disk=auto-delete=yes,boot=yes,device-name=lb-backend-template,image=projects/debian-cloud/global/images/debian-12-bookworm-v20240515,mode=rw,size=10,type=pd-balanced --no-shielded-secure-boot --shielded-vtpm --shielded-integrity-monitoring --reservation-affinity=any
+gcloud compute instance-templates create lb-backend-template --project=qwiklabs-gcp-03-b3e9c12e8cde --machine-type=n1-standard-1 --network-interface=network-tier=PREMIUM,subnet=default --metadata=startup-script=\#\!\ /bin/bash$'\n'sudo\ apt-get\ update$'\n'sudo\ apt-get\ install\ apache2\ -y$'\n'sudo\ a2ensite\ default-ssl$'\n'sudo\ a2enmod\ ssl$'\n'sudo\ su$'\n'vm_hostname=\"\$\(curl\ -H\ \"Metadata-Flavor:Google\"\ \\$'\n'http://metadata.google.internal/computeMetadata/v1/instance/name\)\"$'\n'echo\ \"Page\ served\ from:\ \$vm_hostname\"\ \|\ \\$'\n'tee\ /var/www/html/index.html,enable-oslogin=true --maintenance-policy=MIGRATE --provisioning-model=STANDARD --service-account=401603670420-compute@developer.gserviceaccount.com --scopes=https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/trace.append --region=us-east1 --tags=allow-health-check,http-server,https-server,lb-health-check --create-disk=auto-delete=yes,boot=yes,device-name=lb-backend-template,image=projects/debian-cloud/global/images/debian-12-bookworm-v20240515,mode=rw,size=10,type=pd-balanced --no-shielded-secure-boot --shielded-vtpm --shielded-integrity-monitoring --reservation-affinity=any
 ```
 
 Wait for the instance template to be created.
@@ -83,8 +83,11 @@ gcloud beta compute instance-groups managed create lb-backend-example --project=
 Wait for the instance group to be created.
 
 ```
-gcloud beta compute instance-groups managed set-autoscaling lb-backend-example --project=qwiklabs-gcp-03-b3e9c12e8cde --zone=us-east1-d --mode=off --min-num-replicas=1 --max-num-replicas=10 --target-cpu-utilization=0.6 --cool-down-period=60
+gcloud beta compute instance-groups managed set-autoscaling lb-backend-example --project=qwiklabs-gcp-03-b3e9c12e8cde --zone=us-east1-d --mode=off --min-num-replicas=1 --max-num-replicas=1 --target-cpu-utilization=0.6 --cool-down-period=60
 ```
+
+Wait for autoscaler to be created.
+
 #### Add a named port to the instance group
 
 For your instance group, in Cloud Shell, define an HTTP service and map a port name to the relevant port:

@@ -179,6 +179,59 @@ Validate that you are able to access all the webpages by opening them in your br
 
 ### Task 5. Create Cloud Armor security policy rules for Bot Management
 
+1. In Cloud Shell, create security policy via gcloud:
+```
+gcloud compute security-policies create recaptcha-policy \
+    --description "policy for bot management"
+```
+
+2. To use reCAPTCHA Enterprise manual challenge to distinguish between human and automated clients, associate the reCAPTCHA WAF challenge site key (`CHALLENGE-PAGE-KEY`) you previously created for a manual challenge with the security policy. In the following script, remember to replace `"CHALLENGE-PAGE-KEY"` with the key you previously created:
+```
+gcloud compute security-policies update recaptcha-policy \
+  --recaptcha-redirect-site-key "CHALLENGE-PAGE-KEY"
+```
+
+3. Add a bot management rule to allow traffic if the url path matches good-score.html and has a score greater than 0.4:
+```
+gcloud compute security-policies rules create 2000 \
+    --security-policy recaptcha-policy\
+    --expression "request.path.matches('good-score.html') &&    token.recaptcha_session.score > 0.4"\
+    --action allow
+```
+
+4. Add a bot management rule to deny traffic if the url path matches bad-score.html and has a score less than 0.6:
+```
+gcloud compute security-policies rules create 3000 \
+    --security-policy recaptcha-policy\
+    --expression "request.path.matches('bad-score.html') && token.recaptcha_session.score < 0.6"\
+    --action "deny-403"
+```
+
+5. Add a bot management rule to redirect traffic to Google reCAPTCHA if the url path matches median-score.html and has a score equal to 0.5:
+```
+gcloud compute security-policies rules create 1000 \
+    --security-policy recaptcha-policy\
+    --expression "request.path.matches('median-score.html') && token.recaptcha_session.score == 0.5"\
+    --action redirect \
+    --redirect-type google-recaptcha
+```
+
+6. Attach the security policy to the backend service `http-backend`:
+```
+gcloud compute backend-services update http-backend \
+    --security-policy recaptcha-policy --global
+```
+
+7. In the console, navigate to Navigation menu > Network Security > Cloud Armor policies.
+
+8. Click `recaptcha-policy`.
+
+### Task 6. Validate Bot Management with Cloud Armor
+
+Follow the instructions from the lab.
+
+### Congratulations!
+
 
 
 

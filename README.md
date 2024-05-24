@@ -4,7 +4,7 @@ Today's fast-paced digital world needs security experts. Become one by mastering
 
 ## Detect, Analyze and Investigate!
 
-#### 1. IAM Custom Roles: Lab
+#### 1. [IAM Custom Roles: Lab](./GSP190 - IAM Custom Roles/README.md)
 #### 2. Secure BigLake Data: Challenge Lab
 #### 3. Bot Management with Google Cloud Armor and reCAPTCHA: Lab
 #### 4. Gating Deployments with Binary Authorization: Lab

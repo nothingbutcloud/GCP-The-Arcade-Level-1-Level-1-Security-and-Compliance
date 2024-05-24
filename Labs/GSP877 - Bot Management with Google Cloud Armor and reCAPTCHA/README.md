@@ -23,7 +23,7 @@ In this lab, you learn how to:
 
 ## Solution
 
-Project ID: `qwiklabs-gcp-03-b3e9c12e8cde`
+Project ID: `qwiklabs-gcp-03-f8adc4abc8c5`
 Region: `us-east1`
 Zone: `us-east1-d`
 
@@ -98,11 +98,168 @@ gcloud compute instance-groups set-named-ports lb-backend-example \
 --zone us-east1-d
 ```
 
+### Task 3. Configure the HTTP Load Balancer
 
-###
+Follow the instructions from the lab.
+
+Below is the equivalent commands:
+
+```
+POST https://compute.googleapis.com/compute/beta/projects/qwiklabs-gcp-03-b3e9c12e8cde/global/healthChecks
+{
+  "checkIntervalSec": 5,
+  "description": "",
+  "healthyThreshold": 2,
+  "logConfig": {
+    "enable": false
+  },
+  "name": "http-health-check",
+  "tcpHealthCheck": {
+    "port": 80,
+    "proxyHeader": "NONE"
+  },
+  "timeoutSec": 5,
+  "type": "TCP",
+  "unhealthyThreshold": 2
+}
+
+POST https://compute.googleapis.com/compute/v1/projects/qwiklabs-gcp-03-b3e9c12e8cde/global/securityPolicies
+{
+  "description": "Default security policy for: http-backend",
+  "name": "default-security-policy-for-backend-service-http-backend",
+  "rules": [
+    {
+      "action": "allow",
+      "match": {
+        "config": {
+          "srcIpRanges": [
+            "*"
+          ]
+        },
+        "versionedExpr": "SRC_IPS_V1"
+      },
+      "priority": 2147483647
+    },
+    {
+      "action": "throttle",
+      "description": "Default rate limiting rule",
+      "match": {
+        "config": {
+          "srcIpRanges": [
+            "*"
+          ]
+        },
+        "versionedExpr": "SRC_IPS_V1"
+      },
+      "priority": 2147483646,
+      "rateLimitOptions": {
+        "conformAction": "allow",
+        "enforceOnKey": "IP",
+        "exceedAction": "deny(403)",
+        "rateLimitThreshold": {
+          "count": 500,
+          "intervalSec": 60
+        }
+      }
+    }
+  ]
+}
+
+POST https://compute.googleapis.com/compute/beta/projects/qwiklabs-gcp-03-b3e9c12e8cde/global/backendServices
+{
+  "backends": [
+    {
+      "balancingMode": "UTILIZATION",
+      "capacityScaler": 1,
+      "group": "projects/qwiklabs-gcp-03-b3e9c12e8cde/zones/us-east1-d/instanceGroups/lb-backend-example",
+      "maxUtilization": 0.8
+    }
+  ],
+  "cdnPolicy": {
+    "cacheKeyPolicy": {
+      "includeHost": true,
+      "includeProtocol": true,
+      "includeQueryString": true
+    },
+    "cacheMode": "USE_ORIGIN_HEADERS",
+    "negativeCaching": false,
+    "serveWhileStale": 0
+  },
+  "compressionMode": "DISABLED",
+  "connectionDraining": {
+    "drainingTimeoutSec": 300
+  },
+  "description": "",
+  "enableCDN": true,
+  "healthChecks": [
+    "projects/qwiklabs-gcp-03-b3e9c12e8cde/global/healthChecks/http-health-check"
+  ],
+  "ipAddressSelectionPolicy": "IPV4_ONLY",
+  "loadBalancingScheme": "EXTERNAL_MANAGED",
+  "localityLbPolicy": "ROUND_ROBIN",
+  "logConfig": {
+    "enable": true,
+    "sampleRate": 1
+  },
+  "name": "http-backend",
+  "portName": "http",
+  "protocol": "HTTP",
+  "securityPolicy": "projects/qwiklabs-gcp-03-b3e9c12e8cde/global/securityPolicies/default-security-policy-for-backend-service-http-backend",
+  "sessionAffinity": "NONE",
+  "timeoutSec": 30
+}
+
+POST https://compute.googleapis.com/compute/v1/projects/qwiklabs-gcp-03-b3e9c12e8cde/global/backendServices/http-backend/setSecurityPolicy
+{
+  "securityPolicy": "projects/qwiklabs-gcp-03-b3e9c12e8cde/global/securityPolicies/default-security-policy-for-backend-service-http-backend"
+}
+
+POST https://compute.googleapis.com/compute/v1/projects/qwiklabs-gcp-03-b3e9c12e8cde/global/urlMaps
+{
+  "defaultService": "projects/qwiklabs-gcp-03-b3e9c12e8cde/global/backendServices/http-backend",
+  "name": "http-lb"
+}
+
+POST https://compute.googleapis.com/compute/v1/projects/qwiklabs-gcp-03-b3e9c12e8cde/global/targetHttpProxies
+{
+  "name": "http-lb-target-proxy",
+  "urlMap": "projects/qwiklabs-gcp-03-b3e9c12e8cde/global/urlMaps/http-lb"
+}
+
+POST https://compute.googleapis.com/compute/v1/projects/qwiklabs-gcp-03-b3e9c12e8cde/global/forwardingRules
+{
+  "IPProtocol": "TCP",
+  "ipVersion": "IPV4",
+  "loadBalancingScheme": "EXTERNAL_MANAGED",
+  "name": "http-lb-forwarding-rule",
+  "networkTier": "PREMIUM",
+  "portRange": "80",
+  "target": "projects/qwiklabs-gcp-03-b3e9c12e8cde/global/targetHttpProxies/http-lb-target-proxy"
+}
+```
 
 
-###
+### Task 4. Create and deploy reCAPTCHA session token and challenge-page site key
+
+#### Create reCAPTCHA session token and WAF challenge-page site key
+
+1. Create the reCAPTCHA session token site key and enable the WAF feature for the key:
+
+```
+gcloud recaptcha keys create --display-name=test-key-name \
+  --web --allow-all-domains --integration-type=score --testing-score=0.5 \
+  --waf-feature=session-token --waf-service=ca
+```
+
+2. Create the reCAPTCHA WAF challenge-page site key and enable the WAF feature for the key. You can use the reCAPTCHA challenge page feature to redirect incoming requests to reCAPTCHA Enterprise to determine whether each request is potentially fraudulent or legitimate. Later, you associate this key with the Cloud Armor security policy to enable the manual challenge. This lab refers to this key as `CHALLENGE-PAGE-KEY` in the later steps.
+
+```
+
+#### Implement reCAPTCHA session token site key
+
+1. Navigate to Navigation menu (Navigation menu icon) > Compute Engine > VM Instances. Locate the VM in your instance group and SSH to it.
+
+
 
 
 ###

@@ -6,8 +6,8 @@ Today's fast-paced digital world needs security experts. Become one by mastering
 
 #### 1. [IAM Custom Roles: Lab](./Labs/GSP190%20-%20IAM%20Custom%20Roles/README.md)
 #### 2. [Secure BigLake Data: Challenge Lab](./Labs/ARC1290%20-0%20Secure0%20BigLake0%20Data0%20Challenge0%20Lab/README.md)
-#### 3. Bot Management with Google Cloud Armor and reCAPTCHA: Lab
-#### 4. Gating Deployments with Binary Authorization: Lab
+#### 3. [Bot Management with Google Cloud Armor and reCAPTCHA: Lab](./Labs/GSP877%20-%20Bot%20Management%20with%20Google%20Cloud%20Armor%20and%20reCAPTCHA/README.md)
+#### 4. [Gating Deployments with Binary Authorization: Lab](https://www.cloudskillsboost.google/games/5058/labs/33039)
 #### 5. Protect Cloud Traffic with BeyondCorp Enterprise (BCE) Security: Challenge Lab
 #### 6. Detect and Investigate Threats with Security Command Center: Lab
 #### 7. Analyzing Findings with Security Command Center: Lab

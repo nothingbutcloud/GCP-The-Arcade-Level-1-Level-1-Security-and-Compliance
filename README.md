@@ -18,7 +18,7 @@ Today's fast-paced digital world needs security experts. Become one by mastering
 2. [Configuring IAM Permissions with gcloud - AWS: Lab](./Labs/GSP1126%20-%20Configuring%20IAM%20Permissions%20with%20gcloud%20-%20AWS/README.md)
 3. [Configuring Networks via gcloud: Lab](./Labs/GSP630%20-%20Configuring%20Networks%20via%20gcloud/README.md)
 4. [Getting Started with Security Command Center: Lab](./Labs/GSP1124%20-%20Getting%20Started%20with%20Security%20Command%20Center/README.md)
-5. Continuous Delivery with Google Cloud Deploy: Lab
+5. [Continuous Delivery with Google Cloud Deploy: Lab](./Labs/GSP1079%20-%20Continuous%20Delivery%20with%20Google%20Cloud%20Deploy/README.md)
 
 ## Claim your Skill Badges
 This section offers optional skill badges that participants can choose to engage with but are not mandatory.

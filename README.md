@@ -16,7 +16,7 @@ Today's fast-paced digital world needs security experts. Become one by mastering
 
 1. [Configuring IAM Permissions with gCloud - Azure: Lab](./Labs/GSP1119%20-%20Configuring%20IAM%20Permissions%20with%20gCloud%20-%20Azure/README.md)
 2. [Configuring IAM Permissions with gcloud - AWS: Lab](./Labs/GSP1126%20-%20Configuring%20IAM%20Permissions%20with%20gcloud%20-%20AWS/README.md)
-3. Configuring Networks via gcloud: Lab
+3. [Configuring Networks via gcloud: Lab](./Labs/GSP630%20-%20Configuring%20Networks%20via%20gcloud/README.md)
 4. Getting Started with Security Command Center: Lab
 5. Continuous Delivery with Google Cloud Deploy: Lab
 

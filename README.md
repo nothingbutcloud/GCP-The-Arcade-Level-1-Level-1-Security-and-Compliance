@@ -9,8 +9,8 @@ Today's fast-paced digital world needs security experts. Become one by mastering
 #### 3. [Bot Management with Google Cloud Armor and reCAPTCHA: Lab](./Labs/GSP877%20-%20Bot%20Management%20with%20Google%20Cloud%20Armor%20and%20reCAPTCHA/README.md)
 #### 4. [Gating Deployments with Binary Authorization: Lab](./Labs/GSP1183%20-%20Gating%20Deployments%20with%20Binary%20Authorization/README.md)
 #### 5. Protect Cloud Traffic with BeyondCorp Enterprise (BCE) Security: Challenge Lab
-#### 6. Detect and Investigate Threats with Security Command Center: Lab
-#### 7. Analyzing Findings with Security Command Center: Lab
+#### 6. [Detect and Investigate Threats with Security Command Center: Lab](./Labs/GSP1125%20-%20Detect%20and%20Investigate%20Threats%20with%20Security%20Command%20Center/README.md)
+#### 7. [Analyzing Findings with Security Command Center: Lab](./Labs/GSP1164%20-%20Analyzing%20Findings%20with%20Security%20Command%20Center/README.md)
 
 ## Permission authorized!
 
